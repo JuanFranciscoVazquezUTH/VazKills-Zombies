@@ -34,15 +34,31 @@ audioBtn.textContent = "Silenciar Audio";
 audioBtn.onclick = () => {
     audioEnabled = !audioEnabled;
     audioBtn.textContent = audioEnabled ? "Silenciar Audio" : "Activar Audio";
-    if(audioEnabled) startBgMusic();
+
+    if (audioEnabled) {
+        // Reanudar música de fondo si ya había empezado
+        if (bgStarted) {
+            bgMusic.play().catch(e => console.log("Error bgMusic:", e));
+        } else {
+            startBgMusic();
+        }
+    } else {
+        // Pausar todos los audios
+        bgMusic.pause();
+        shootSound.pause();
+        laserSound.pause();
+        shotgunSound.pause();
+        killSound.pause();
+        gameOverSound.pause();
+    }
 };
 
 // -------------------
 // Función iniciar música de fondo
 // -------------------
 function startBgMusic() {
-    if(!bgStarted && audioEnabled){
-        bgMusic.play().catch(e=>console.log("Error bgMusic:", e));
+    if (!bgStarted && audioEnabled) {
+        bgMusic.play().catch(e => console.log("Error bgMusic:", e));
         bgStarted = true;
     }
 }
@@ -71,7 +87,7 @@ const weaponImgs = {
 let player = {
     x: canvas.width/2,
     y: canvas.height/2,
-    size: 25,  
+    size: 25,
     speed: 3,
     dx: 0,
     dy: 0,
@@ -116,9 +132,9 @@ let spacePressed = false;
 document.addEventListener("keydown", keyDown);
 document.addEventListener("keyup", keyUp);
 
-function keyDown(e){
+function keyDown(e) {
     keys[e.key] = true;
-    if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","w","a","s","d"," "].includes(e.key)) e.preventDefault();
+    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", "a", "s", "d", " "].includes(e.key)) e.preventDefault();
 
     player.dx = 0;
     player.dy = 0;
@@ -128,20 +144,20 @@ function keyDown(e){
     if (keys["ArrowLeft"] || keys["a"]) player.dx = -player.speed;
     if (keys["ArrowRight"] || keys["d"]) player.dx = player.speed;
 
-    if (player.dx !== 0 || player.dy !== 0){
+    if (player.dx !== 0 || player.dy !== 0) {
         player.lastDx = player.dx / player.speed;
         player.lastDy = player.dy / player.speed;
     }
 
-    if (e.code === "Space" && !spacePressed){
+    if (e.code === "Space" && !spacePressed) {
         shoot();
         spacePressed = true;
     }
 }
 
-function keyUp(e){
+function keyUp(e) {
     keys[e.key] = false;
-    if (["ArrowUp","ArrowDown","ArrowLeft","ArrowRight","w","a","s","d"," "].includes(e.key)) e.preventDefault();
+    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", "a", "s", "d", " "].includes(e.key)) e.preventDefault();
     if (!keys["ArrowUp"] && !keys["w"] && !keys["ArrowDown"] && !keys["s"]) player.dy = 0;
     if (!keys["ArrowLeft"] && !keys["a"] && !keys["ArrowRight"] && !keys["d"]) player.dx = 0;
     if (e.code === "Space") spacePressed = false;
@@ -150,59 +166,59 @@ function keyUp(e){
 // -------------------
 // Función reproducir sonido de disparo según arma
 // -------------------
-function playShootSound(){
-    if(!audioEnabled) return;
+function playShootSound() {
+    if (!audioEnabled) return;
     let audioSrc = shootSound;
-    if(player.weapon === "laser") audioSrc = laserSound;
-    if(player.weapon === "shotgun") audioSrc = shotgunSound;
+    if (player.weapon === "laser") audioSrc = laserSound;
+    if (player.weapon === "shotgun") audioSrc = shotgunSound;
 
-    // Clonar el audio para reproducir múltiples disparos
+    // Clonar el audio para permitir múltiples disparos simultáneos
     let s = audioSrc.cloneNode();
     s.currentTime = 0;
-    s.play().catch(e=>console.log("Error disparo:", e));
+    s.play().catch(e => console.log("Error disparo:", e));
 }
 
 // -------------------
 // Función disparo según arma
 // -------------------
-function shoot(){
-    if(player.weapon === "normal"){
+function shoot() {
+    if (player.weapon === "normal") {
         bullets.push({ x: player.x, y: player.y, size: 4, speed: 6, dx: player.lastDx, dy: player.lastDy });
     }
-    else if(player.weapon === "shotgun"){
+    else if (player.weapon === "shotgun") {
         let angles = [-0.2, 0, 0.2];
-        angles.forEach(a=>{
-            let dx = Math.cos(a)*player.lastDx - Math.sin(a)*player.lastDy;
-            let dy = Math.sin(a)*player.lastDx + Math.cos(a)*player.lastDy;
+        angles.forEach(a => {
+            let dx = Math.cos(a) * player.lastDx - Math.sin(a) * player.lastDy;
+            let dy = Math.sin(a) * player.lastDx + Math.cos(a) * player.lastDy;
             bullets.push({ x: player.x, y: player.y, size: 4, speed: 6, dx: dx, dy: dy });
         });
     }
-    else if(player.weapon === "laser"){
+    else if (player.weapon === "laser") {
         bullets.push({ x: player.x, y: player.y, size: 6, speed: 10, dx: player.lastDx, dy: player.lastDy });
     }
 
-    playShootSound(); // reproducir sonido según arma
+    playShootSound();
 }
 
 // -------------------
 // Spawns
 // -------------------
-function spawnZombie(){
-    let side = Math.floor(Math.random()*4);
-    let z = {x:0,y:0,size:25,speed:1.4};
-    if(side===0) z.x=0,z.y=Math.random()*canvas.height;
-    if(side===1) z.x=canvas.width,z.y=Math.random()*canvas.height;
-    if(side===2) z.x=Math.random()*canvas.width,z.y=0;
-    if(side===3) z.x=Math.random()*canvas.width,z.y=canvas.height;
+function spawnZombie() {
+    let side = Math.floor(Math.random() * 4);
+    let z = { x: 0, y: 0, size: 25, speed: 1.4 };
+    if (side === 0) z.x = 0, z.y = Math.random() * canvas.height;
+    if (side === 1) z.x = canvas.width, z.y = Math.random() * canvas.height;
+    if (side === 2) z.x = Math.random() * canvas.width, z.y = 0;
+    if (side === 3) z.x = Math.random() * canvas.width, z.y = canvas.height;
     zombies.push(z);
 }
 
-function spawnWeaponItem(){
-    let types = ["shotgun","laser"];
-    let type = types[Math.floor(Math.random()*types.length)];
+function spawnWeaponItem() {
+    let types = ["shotgun", "laser"];
+    let type = types[Math.floor(Math.random() * types.length)];
     let item = {
-        x: Math.random()*(canvas.width-40)+20,
-        y: Math.random()*(canvas.height-40)+20,
+        x: Math.random() * (canvas.width - 40) + 20,
+        y: Math.random() * (canvas.height - 40) + 20,
         type: type,
         size: 20,
         timer: 0
@@ -213,62 +229,62 @@ function spawnWeaponItem(){
 // -------------------
 // Movimiento
 // -------------------
-function moveZombies(){
-    zombies.forEach(z=>{
+function moveZombies() {
+    zombies.forEach(z => {
         let angle = Math.atan2(player.y - z.y, player.x - z.x);
-        z.x += Math.cos(angle)*z.speed;
-        z.y += Math.sin(angle)*z.speed;
+        z.x += Math.cos(angle) * z.speed;
+        z.y += Math.sin(angle) * z.speed;
 
-        if(!player.invincible && collision(player,z)){
+        if (!player.invincible && collision(player, z)) {
             player.lives--;
-            player.weapon="normal";
+            player.weapon = "normal";
             player.invincible = true;
             player.invTime = 0;
-            player.shakeTime = 20; // activar shake de pantalla completa
-            if(player.lives<=0) gameOver=true;
+            player.shakeTime = 20; // shake pantalla completa
+            if (player.lives <= 0) gameOver = true;
         }
     });
 }
 
-function moveBullets(){
-    bullets = bullets.filter(b=>{
-        b.x+=b.dx*b.speed;
-        b.y+=b.dy*b.speed;
-        return b.x>0 && b.x<canvas.width && b.y>0 && b.y<canvas.height;
+function moveBullets() {
+    bullets = bullets.filter(b => {
+        b.x += b.dx * b.speed;
+        b.y += b.dy * b.speed;
+        return b.x > 0 && b.x < canvas.width && b.y > 0 && b.y < canvas.height;
     });
 }
 
-function bulletHitZombie(){
-    for(let zi=zombies.length-1;zi>=0;zi--){
-        for(let bi=bullets.length-1;bi>=0;bi--){
-            let z=zombies[zi];
-            let b=bullets[bi];
-            let dx=b.x-z.x;
-            let dy=b.y-z.y;
-            if(Math.sqrt(dx*dx+dy*dy)<b.size+z.size){
-                zombies.splice(zi,1);
-                bullets.splice(bi,1);
+function bulletHitZombie() {
+    for (let zi = zombies.length - 1; zi >= 0; zi--) {
+        for (let bi = bullets.length - 1; bi >= 0; bi--) {
+            let z = zombies[zi];
+            let b = bullets[bi];
+            let dx = b.x - z.x;
+            let dy = b.y - z.y;
+            if (Math.sqrt(dx * dx + dy * dy) < b.size + z.size) {
+                zombies.splice(zi, 1);
+                bullets.splice(bi, 1);
                 kills++;
-                if(audioEnabled && killSound){killSound.currentTime=0; killSound.play().catch(e=>console.log("Error kill:",e));}
+                if (audioEnabled && killSound) { killSound.currentTime = 0; killSound.play().catch(e => console.log("Error kill:", e)); }
                 break;
             }
         }
     }
 }
 
-function pickupWeapon(){
-    for(let i=weaponItems.length-1;i>=0;i--){
+function pickupWeapon() {
+    for (let i = weaponItems.length - 1; i >= 0; i--) {
         let w = weaponItems[i];
         w.timer++;
-        if(w.timer>180){ // 3 segundos -> eliminar
-            weaponItems.splice(i,1);
+        if (w.timer > 180) { // 3 segundos -> eliminar
+            weaponItems.splice(i, 1);
             continue;
         }
-        let dx = player.x-w.x;
-        let dy = player.y-w.y;
-        if(Math.sqrt(dx*dx+dy*dy)<player.size+w.size){
+        let dx = player.x - w.x;
+        let dy = player.y - w.y;
+        if (Math.sqrt(dx * dx + dy * dy) < player.size + w.size) {
             player.weapon = w.type;
-            weaponItems.splice(i,1);
+            weaponItems.splice(i, 1);
         }
     }
 }
@@ -276,51 +292,51 @@ function pickupWeapon(){
 // -------------------
 // Dibujos
 // -------------------
-function drawBackground(){
-    if(backgroundImg.complete) ctx.drawImage(backgroundImg,0,0,canvas.width,canvas.height);
-    else {ctx.fillStyle="#000"; ctx.fillRect(0,0,canvas.width,canvas.height);}
+function drawBackground() {
+    if (backgroundImg.complete) ctx.drawImage(backgroundImg, 0, 0, canvas.width, canvas.height);
+    else { ctx.fillStyle = "#000"; ctx.fillRect(0, 0, canvas.width, canvas.height); }
 }
 
-function drawPlayer(){
+function drawPlayer() {
     ctx.save();
-    if(playerImg.complete){
-        if(player.lastDx<0){
-            ctx.translate(player.x+player.size,player.y-player.size);
-            ctx.scale(-1,1);
-            ctx.drawImage(playerImg,0,0,player.size*2,player.size*2);
-        } else ctx.drawImage(playerImg,player.x-player.size,player.y-player.size,player.size*2,player.size*2);
+    if (playerImg.complete) {
+        if (player.lastDx < 0) {
+            ctx.translate(player.x + player.size, player.y - player.size);
+            ctx.scale(-1, 1);
+            ctx.drawImage(playerImg, 0, 0, player.size * 2, player.size * 2);
+        } else ctx.drawImage(playerImg, player.x - player.size, player.y - player.size, player.size * 2, player.size * 2);
     } else {
-        ctx.fillStyle="cyan";
+        ctx.fillStyle = "cyan";
         ctx.beginPath();
-        ctx.arc(player.x,player.y,player.size,0,Math.PI*2);
+        ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
         ctx.fill();
     }
     ctx.restore();
 }
 
-function drawZombies(){
-    zombies.forEach(z=>{
-        if(zombieImg.complete) ctx.drawImage(zombieImg,z.x-z.size,z.y-z.size,z.size*2,z.size*2);
-        else {ctx.fillStyle="lime"; ctx.beginPath(); ctx.arc(z.x,z.y,z.size,0,Math.PI*2);ctx.fill();}
+function drawZombies() {
+    zombies.forEach(z => {
+        if (zombieImg.complete) ctx.drawImage(zombieImg, z.x - z.size, z.y - z.size, z.size * 2, z.size * 2);
+        else { ctx.fillStyle = "lime"; ctx.beginPath(); ctx.arc(z.x, z.y, z.size, 0, Math.PI * 2); ctx.fill(); }
     });
 }
 
-function drawBullets(){
-    bullets.forEach(b=>{
-        ctx.fillStyle="yellow";
-        ctx.beginPath();ctx.arc(b.x,b.y,b.size,0,Math.PI*2);ctx.fill();
+function drawBullets() {
+    bullets.forEach(b => {
+        ctx.fillStyle = "yellow";
+        ctx.beginPath(); ctx.arc(b.x, b.y, b.size, 0, Math.PI * 2); ctx.fill();
     });
 }
 
-function drawWeaponItems(){
-    weaponItems.forEach(w=>{
-        if(weaponImgs[w.type]){
+function drawWeaponItems() {
+    weaponItems.forEach(w => {
+        if (weaponImgs[w.type]) {
             let img = new Image();
             img.src = weaponImgs[w.type];
-            ctx.drawImage(img, w.x-w.size, w.y-w.size, w.size*2, w.size*2);
+            ctx.drawImage(img, w.x - w.size, w.y - w.size, w.size * 2, w.size * 2);
         } else {
-            ctx.fillStyle=w.type==="shotgun"?"orange":"pink";
-            ctx.beginPath();ctx.arc(w.x,w.y,w.size,0,Math.PI*2);ctx.fill();
+            ctx.fillStyle = w.type === "shotgun" ? "orange" : "pink";
+            ctx.beginPath(); ctx.arc(w.x, w.y, w.size, 0, Math.PI * 2); ctx.fill();
         }
     });
 }
@@ -328,11 +344,11 @@ function drawWeaponItems(){
 // -------------------
 // Shake efecto pantalla completa
 // -------------------
-function applyShake(){
-    if(player.shakeTime>0){
-        let dx = (Math.random()-0.5)*10;
-        let dy = (Math.random()-0.5)*10;
-        ctx.translate(dx,dy);
+function applyShake() {
+    if (player.shakeTime > 0) {
+        let dx = (Math.random() - 0.5) * 10;
+        let dy = (Math.random() - 0.5) * 10;
+        ctx.translate(dx, dy);
         player.shakeTime--;
     }
 }
@@ -340,28 +356,28 @@ function applyShake(){
 // -------------------
 // Colisiones
 // -------------------
-function collision(a,b){return Math.sqrt((a.x-b.x)**2+(a.y-b.y)**2)<a.size+b.size;}
+function collision(a, b) { return Math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2) < a.size + b.size; }
 
 // -------------------
 // Loop principal
 // -------------------
-function update(){
+function update() {
     ctx.save();
     applyShake();
     drawBackground();
 
-    if(!gameOver){
-        player.x+=player.dx;
-        player.y+=player.dy;
+    if (!gameOver) {
+        player.x += player.dx;
+        player.y += player.dy;
 
-        if(player.x-player.size<0) player.x=player.size;
-        if(player.x+player.size>canvas.width) player.x=canvas.width-player.size;
-        if(player.y-player.size<0) player.y=player.size;
-        if(player.y+player.size>canvas.height) player.y=canvas.height-player.size;
+        if (player.x - player.size < 0) player.x = player.size;
+        if (player.x + player.size > canvas.width) player.x = canvas.width - player.size;
+        if (player.y - player.size < 0) player.y = player.size;
+        if (player.y + player.size > canvas.height) player.y = canvas.height - player.size;
 
-        if(player.invincible){
+        if (player.invincible) {
             player.invTime++;
-            if(player.invTime>60) player.invincible=false;
+            if (player.invTime > 60) player.invincible = false;
         }
 
         drawPlayer();
@@ -373,30 +389,30 @@ function update(){
         pickupWeapon();
         drawWeaponItems();
 
-        if(spawnTime%90===0) spawnZombie();
-        if(spawnTime%500===0) spawnWeaponItem();
+        if (spawnTime % 90 === 0) spawnZombie();
+        if (spawnTime % 500 === 0) spawnWeaponItem();
         spawnTime++;
 
-        if(spawnTime%30===0) score++;
+        if (spawnTime % 30 === 0) score++;
 
-        ctx.fillStyle="white";
-        ctx.font="20px Arial";
-        ctx.fillText("Score: "+score,10,25);
-        ctx.fillText("Kills: "+kills,10,50);
-        ctx.fillText("Lives: "+player.lives,10,75);
-        ctx.fillText("Weapon: "+player.weapon,10,100);
+        ctx.fillStyle = "white";
+        ctx.font = "20px Arial";
+        ctx.fillText("Score: " + score, 10, 25);
+        ctx.fillText("Kills: " + kills, 10, 50);
+        ctx.fillText("Lives: " + player.lives, 10, 75);
+        ctx.fillText("Weapon: " + player.weapon, 10, 100);
 
     } else {
-        ctx.fillStyle="white";
-        ctx.font="30px Arial";
-        ctx.fillText("GAME OVER",canvas.width/2-80,canvas.height/2);
-        ctx.fillText("Score: "+score,canvas.width/2-55,canvas.height/2+40);
-        ctx.fillText("Kills: "+kills,canvas.width/2-50,canvas.height/2+80);
+        ctx.fillStyle = "white";
+        ctx.font = "30px Arial";
+        ctx.fillText("GAME OVER", canvas.width / 2 - 80, canvas.height / 2);
+        ctx.fillText("Score: " + score, canvas.width / 2 - 55, canvas.height / 2 + 40);
+        ctx.fillText("Kills: " + kills, canvas.width / 2 - 50, canvas.height / 2 + 80);
 
-        if(audioEnabled && !gameOverSoundPlayed && gameOverSound){
-            gameOverSound.currentTime=0;
-            gameOverSound.play().catch(e=>console.log("Error gameover:",e));
-            gameOverSoundPlayed=true;
+        if (audioEnabled && !gameOverSoundPlayed && gameOverSound) {
+            gameOverSound.currentTime = 0;
+            gameOverSound.play().catch(e => console.log("Error gameover:", e));
+            gameOverSoundPlayed = true;
         }
     }
 
@@ -412,14 +428,14 @@ update();
 // -------------------
 // Botón reiniciar
 // -------------------
-document.getElementById("restartBtn").onclick=()=>{
-    player.x=canvas.width/2;
-    player.y=canvas.height/2;
-    player.dx=0; player.dy=0;
-    player.lastDx=1; player.lastDy=0;
-    player.lives=3; player.weapon="normal"; player.invincible=false; player.invTime=0; player.shakeTime=0;
+document.getElementById("restartBtn").onclick = () => {
+    player.x = canvas.width / 2;
+    player.y = canvas.height / 2;
+    player.dx = 0; player.dy = 0;
+    player.lastDx = 1; player.lastDy = 0;
+    player.lives = 3; player.weapon = "normal"; player.invincible = false; player.invTime = 0; player.shakeTime = 0;
 
-    zombies=[]; bullets=[]; weaponItems=[];
-    kills=0; score=0; spawnTime=0;
-    gameOver=false; gameOverSoundPlayed=false;
+    zombies = []; bullets = []; weaponItems = [];
+    kills = 0; score = 0; spawnTime = 0;
+    gameOver = false; gameOverSoundPlayed = false;
 };

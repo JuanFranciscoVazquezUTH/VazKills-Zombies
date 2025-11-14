@@ -2,6 +2,7 @@
 
 **Desarrollador:** Juan Francisco Vázquez Acedo  
 **Juego Web Indie Minimalista en JavaScript**  
+Link para jugar: https://juanfranciscovazquezuth.github.io/VazKills-Zombies/
 
 ---
 

@@ -1,104 +1,83 @@
-# VazKills-Zombies
+# 🧟‍♂️ VazKills Zombies
 
+> **Desarrollador:** Juan Francisco Vázquez Acedo  
+> **Versión:** 1.0 (Final Release)  
+> **Tecnologías:** JavaScript Vanilla, HTML5 Canvas, CSS3
 **Desarrollador:** Juan Francisco Vázquez Acedo  
 **Juego Web Indie Minimalista en JavaScript**  
 Link para jugar: https://juanfranciscovazquezuth.github.io/VazKills-Zombies/
 
----
+## 🎮 Descripción
 
-## 🎮 Descripción del Juego
+**VazKills Zombies** es un *shooter* de supervivencia 2D de ritmo rápido desarrollado en tecnologías web nativas. El jugador debe resistir oleadas infinitas de enemigos en un entorno cerrado, utilizando un arsenal variado y reflejos rápidos.
 
-**VazKills-Zombies** es un juego web indie minimalista en el que controlas a un jugador en un escenario cerrado, enfrentando hordas de zombies.  
-El objetivo es sobrevivir el mayor tiempo posible, eliminar enemigos y recoger armas especiales para aumentar tu poder de ataque.  
+Esta versión final incluye mejoras significativas en **"Game Feel"** (retroalimentación visual), un sistema de dificultad escalable y una interfaz de usuario (HUD) moderna.
 
-El juego está desarrollado completamente en **JavaScript, HTML y CSS**, incluyendo imágenes y efectos de sonido para una experiencia inmersiva.
+## ✨ Novedades de la Versión Final
 
----
+* **🩸 Sistema de Gore:** Explosiones de partículas de sangre al eliminar enemigos.
+* **🔫 Nueva Arma:** Ametralladora (Machine Gun) con alta cadencia de fuego.
+* **❤️ Power-ups:** Corazones recolectables para recuperar vidas.
+* **⚙️ Dificultad Dinámica:** Selector de dificultad (Fácil, Normal, Difícil) que ajusta la velocidad y frecuencia de los enemigos.
+* **🖥️ HUD Profesional:** Interfaz gráfica superpuesta con fuentes personalizadas (*Creepster*).
+* **✨ Feedback Visual:** Destellos al disparar (*Muzzle Flash*), temblor de pantalla (*Screen Shake*), texto flotante de daño y efectos de parpadeo por daño.
 
-## ⚙️ Mecánicas y Funciones
+## ⚙️ Mecánicas de Juego
 
-### **Jugador**
-- Se mueve usando **WASD** o **flechas del teclado**.
-- Puede disparar con **barra espaciadora**.
-- Tiene **3 vidas** iniciales.
-- Puede recoger armas especiales:
-  - **Shotgun:** Dispara múltiples balas en abanico.
-  - **Laser:** Disparo más rápido y potente.
-- Al recibir daño:
-  - Pierde una vida.
-  - Pierde cualquier arma especial y vuelve a arma normal.
-  - Se activa un **efecto shake de pantalla completa** por unos segundos.
-  - Se vuelve **invencible temporalmente** para evitar perder varias vidas seguidas.
+### 🕹️ Controles
+| Acción | Tecla / Input |
+| :--- | :--- |
+| **Moverse** | `W`, `A`, `S`, `D` o Flechas `↑`, `↓`, `←`, `→` |
+| **Disparar** | `Barra Espaciadora` |
+| **Pausar** | `P` o `ESC` |
+| **Interfaz** | `Clic Izquierdo` (Mouse) |
 
-### **Zombies**
-- Aparecen de los 4 lados del escenario.
-- Persiguen al jugador con velocidad constante.
-- Si chocan con el jugador, le quitan una vida.
+### ⚔️ Armas y Combate
+El jugador comienza con una pistola básica, pero puede recoger cajas de armas que aparecen aleatoriamente (brillan en el suelo):
 
-### **Balas**
-- Dependen del arma que tengas equipada:
-  - Normal: bala simple.
-  - Shotgun: abanico de 3 balas.
-  - Laser: bala más rápida y grande.
-- Cada bala elimina zombies al colisionar con ellos.
-- Se reproduce sonido específico de cada arma al disparar.
+1.  **Pistola:** Disparo simple, cadencia media.
+2.  **Escopeta (Shotgun):** Dispara 3 proyectiles en abanico. Ideal para control de masas a corta distancia.
+3.  **Láser:** Proyectil de alta velocidad y precisión (cian).
+4.  **Ametralladora (Machine Gun):** Dispara ráfagas rápidas de 4 balas (verde neón).
 
-### **Armas en el mapa**
-- Aparecen aleatoriamente cada cierto tiempo.
-- Desaparecen automáticamente si no se recogen después de **3 segundos**.
-- Imagen personalizada de cada arma (PNG) se muestra en el mapa.
-- Recoger un arma reemplaza el sonido de disparo por el correspondiente.
+### ❤️ Salud y Daño
+* **Vidas Iniciales:** 3 Corazones.
+* **Daño:** Al ser tocado por un zombie, el jugador pierde una vida, el arma especial se rompe y la pantalla tiembla y parpadea en rojo.
+* **Invulnerabilidad:** Tras recibir daño, el jugador es inmune brevemente (parpadeo visual).
+* **Recuperación:** Aparecen ítems de corazón (`life.gif`) que otorgan `+1 Vida`.
 
-### **Score y Estadísticas**
-- **Score:** Aumenta automáticamente con el tiempo.
-- **Kills:** Contador de zombies eliminados.
-- **Lives:** Vidas restantes.
-- **Weapon:** Arma actual equipada.
+### 🧟 Enemigos (Zombies)
+* Utilizan un algoritmo de persecución vectorial para seguir al jugador constantemente.
+* Su velocidad incrementa progresivamente según el número de *Kills* y el nivel de dificultad seleccionado.
 
-### **Sonidos**
-- Sonido de disparo según arma:
-  - `shoot.wav` para arma normal.
-  - `shotgun.mp3` para shotgun.
-  - `laser.mp3` para laser.
-- `kill.wav` al eliminar un zombie.
-- `gameover.wav` al perder todas las vidas.
-- `background.mp3` se reproduce en **loop** hasta el fin del juego.
-- Botón para silenciar o activar audio durante el juego.
+## 🔊 Audio y Efectos
 
-### **Botón Reiniciar**
-- Reinicia la partida restableciendo:
-  - Posición del jugador
-  - Vidas, arma y estadísticas
-  - Zombies, balas y armas en el mapa
-  - Score y kills
+El juego cuenta con un sistema de audio inmersivo con gestión de canales múltiples (clonación de nodos de audio para sonidos simultáneos):
 
----
+* **Disparos:** Sonidos únicos para cada arma (`shoot.wav`, `shotgun.mp3`, `laser.mp3`, `machinegun.mp3`).
+* **Feedback:** Sonido de impacto (`kill.wav`), daño recibido (`hurt.mp3`) y vida extra (`life.mp3`).
+* **Ambiente:** Música de fondo en loop (`background.mp3`) y Game Over (`gameover.wav`).
 
-## 🕹️ Cómo Jugar
+## 🛠️ Tecnologías Implementadas
 
-1. Abrir el juego en un navegador moderno (Chrome, Edge, Firefox).  
-2. Controles:
-   - **Mover jugador:** W/A/S/D o flechas ↑ ↓ ← →  
-   - **Disparar:** Barra espaciadora  
-   - **Reiniciar juego:** Botón "Restart"  
-   - **Silenciar/Activar audio:** Botón "Silenciar Audio"  
+* **HTML5:** Estructura semántica y contenedor del juego.
+* **CSS3:** Estilos avanzados, animaciones (`keyframes` para brillo y temblor), fuentes web (Google Fonts) y diseño responsivo.
+* **JavaScript (ES6):**
+    * Lógica del bucle de juego (`requestAnimationFrame`).
+    * Motor de física propio (Colisiones círculo-círculo).
+    * Gestión de Arrays para entidades (balas, partículas, enemigos).
+    * Manipulación del DOM para el HUD.
 
-3. Sobrevive el mayor tiempo posible y elimina todos los zombies que aparezcan.  
-4. Recoge armas para mejorar tu poder de ataque.  
-5. Evita que los zombies te toquen para no perder vidas.
+## 🚀 Instalación y Ejecución
+
+1.  Clonar el repositorio o descargar el archivo `.zip`.
+2.  Asegurarse de que la estructura de carpetas sea:
+    * `index.html`
+    * `style.css`
+    * `game.js`
+    * `/images` (carpeta con los assets gráficos)
+    * *(Archivos de audio en la raíz)*
+3.  Abrir `index.html` en cualquier navegador moderno (Chrome, Firefox, Edge).
 
 ---
-
-## 🛠️ Tecnologías Usadas
-
-- **HTML5** – Estructura de la página y canvas.  
-- **CSS3** – Estilos simples y funcionales.  
-- **JavaScript** – Lógica del juego, animaciones y control de audio.  
-- **Canvas API** – Para dibujar jugador, zombies, balas y armas.  
-- **Audio** – Efectos de sonido y música de fondo.  
-- **Git & GitHub** – Control de versiones y publicación en línea.  
-
----
-
-## 📂 Estructura del Proyecto
-
+**© 2023 VazKills Zombies** - Desarrollado con fines educativos.

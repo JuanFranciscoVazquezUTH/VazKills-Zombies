@@ -1,23 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VazKills Zombies</title>
+    
     <link rel="stylesheet" href="style.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Roboto:wght@700&display=swap" rel="stylesheet">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <h1>VazKills Zombies</h1>
 
-    <!-- Botones -->
-    <div id="buttons">
-        <button id="restartBtn">Reiniciar Juego</button>
-        <button id="audioBtn">Silenciar Audio</button>
+<div id="splashScreen" class="screen">
+    <div class="menuBtns">
+        <button id="startBtn">START</button>
+        <button id="exitBtn">EXIT</button>
+    </div>
+</div>
+
+<div id="selectScreen" class="screen hidden">
+    
+    <div id="difficultySelector">
+        <h3>SELECCIONA DIFICULTAD</h3>
+        <div class="diff-btns">
+            <button onclick="setDifficulty('easy')" id="btnEasy">FÁCIL</button>
+            <button onclick="setDifficulty('normal')" id="btnNormal" class="selected">NORMAL</button>
+            <button onclick="setDifficulty('hard')" id="btnHard">DIFÍCIL</button>
+        </div>
     </div>
 
-    <!-- Canvas del juego -->
-    <canvas id="gameCanvas" width="800" height="500"></canvas>
+    <div id="characters">
+        <img src="images/pl1.gif" onclick="selectCharacter('pl1.gif')">
+        <img src="images/pl2.gif" onclick="selectCharacter('pl2.gif')">
+        <img src="images/pl3.gif" onclick="selectCharacter('pl3.gif')">
+        <img src="images/pl4.gif" onclick="selectCharacter('pl4.gif')">
+    </div>
+</div>
 
-    <script src="game.js"></script>
+<div id="gameScreen" class="screen hidden">
+    
+    <div id="gameArea">
+        
+        <div id="gameUI">
+            <div class="ui-group" id="ui-lives"></div>
+
+            <div class="ui-center">
+                <div class="stat-box">
+                    <span class="label">KILLS</span>
+                    <span class="value" id="ui-kills">0</span>
+                </div>
+                <div class="stat-box">
+                    <span class="label">SCORE</span>
+                    <span class="value" id="ui-score">0</span>
+                </div>
+            </div>
+
+            <div class="ui-group" id="ui-weapon">
+                <span id="weapon-name">PISTOLA</span>
+                <div id="weapon-icon"></div>
+            </div>
+        </div>
+
+        <div id="flashOverlay"></div>
+        
+        <img id="playerSprite">
+        
+        <canvas id="gameCanvas" width="800" height="500"></canvas>
+        
+        <div id="pauseOverlay" class="hidden">
+            <h2>PAUSA</h2>
+            <p>Presiona 'P' o 'ESC' para continuar</p>
+        </div>
+        
+        <button id="audioBtn" class="mini-btn">🔇</button>
+    </div>
+</div>
+
+<div id="gameOverScreen" class="screen hidden">
+    <h1>GAME OVER</h1>
+    <div id="results"></div>
+    <button onclick="location.reload()">VOLVER A JUGAR</button>
+</div>
+
+<script src="game.js"></script>
 </body>
 </html>

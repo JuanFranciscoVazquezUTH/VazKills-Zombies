@@ -3,6 +3,9 @@
 > **Desarrollador:** Juan Francisco Vázquez Acedo  
 > **Versión:** 1.0 (Final Release)  
 > **Tecnologías:** JavaScript Vanilla, HTML5 Canvas, CSS3
+**Desarrollador:** Juan Francisco Vázquez Acedo  
+**Juego Web Indie Minimalista en JavaScript**  
+Link para jugar: https://juanfranciscovazquezuth.github.io/VazKills-Zombies/
 
 ## 🎮 Descripción
 

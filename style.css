@@ -1,188 +1,126 @@
-/* CONFIGURACIÓN GENERAL DEL CUERPO DE LA PÁGINA */
+/* =========================================
+   CONFIGURACIÓN GENERAL
+   ========================================= */
 body {
-    margin: 0; /* Quita márgenes blancos del navegador */
-    background: black; /* Fondo negro detrás del juego */
-    color: white; /* Texto blanco por defecto */
-    text-align: center; /* Centrar textos */
-    font-family: 'Roboto', Arial, sans-serif; /* Fuente principal legible */
-    overflow: hidden; /* 💡 Evita que aparezcan barras de desplazamiento si algo se sale */
-    height: 100vh; /* Obliga a ocupar el 100% de la altura de la ventana */
-    display: flex; /* Sistema flexible para centrar */
-    justify-content: center; /* Centrado horizontal */
-    align-items: center; /* Centrado vertical */
+    margin: 0; background: black; color: white;
+    text-align: center; font-family: 'Roboto', Arial, sans-serif;
+    overflow: hidden; height: 100vh;
+    display: flex; justify-content: center; align-items: center;
 }
+.screen { position: absolute; width: 100%; height: 100%; top: 0; left: 0; }
+.hidden { display: none !important; }
 
-/* CLASE MAESTRA PARA LAS PANTALLAS */
-.screen {
-    position: absolute; /* Se coloca una encima de otra como capas */
-    width: 100%; height: 100%; top: 0; left: 0;
+/* MENÚS */
+#splashScreen { background: url("images/splash.png") no-repeat center center; background-size: contain; background-color: black; }
+#highScoreDisplay {
+    position: absolute; top: 20px; width: 100%; text-align: center;
+    font-family: 'Creepster', cursive; font-size: 40px; color: gold;
+    text-shadow: 0 0 10px darkorange; z-index: 50;
 }
-
-/* CLASE PARA OCULTAR COSAS */
-.hidden { display: none !important; } /* !important fuerza el ocultamiento */
-
-/* PORTADA (SPLASH) */
-#splashScreen {
-    background: url("images/splash.png") no-repeat center center; /* Imagen de fondo */
-    background-size: contain; /* 💡 contain: Se ve completa sin cortarse. cover: Llena todo pero corta bordes */
-    background-color: black;
-}
-
-/* BOTONES DEL MENÚ */
-.menuBtns {
-    position: absolute; bottom: 15%; width: 100%; /* Posición abajo */
-    display: flex; justify-content: center; gap: 20px;
-}
+.menuBtns { position: absolute; bottom: 10%; width: 100%; display: flex; justify-content: center; gap: 20px; }
 
 button {
-    padding: 12px 25px; /* Tamaño del botón */
-    font-size: 18px; 
-    background: red; 
-    border: 2px solid darkred; /* Borde oscuro para relieve */
-    color: white;
-    border-radius: 8px; /* Bordes redondeados */
-    cursor: pointer; /* Manita del mouse */
-    font-weight: bold;
-    box-shadow: 0 4px 0 darkred; /* Sombra sólida abajo (efecto 3D) */
-    transition: transform 0.1s; /* Suaviza la animación de clic */
+    padding: 12px 30px; font-size: 20px; font-weight: bold;
+    background: #b30000; border: 2px solid #ff0000; color: white;
+    border-radius: 8px; cursor: pointer; text-transform: uppercase;
+    box-shadow: 0 4px 0 #5c0000; transition: transform 0.1s;
+    font-family: 'Creepster', cursive; letter-spacing: 2px;
 }
-/* Efecto al presionar botón */
-button:active { transform: translateY(4px); box-shadow: none; } /* Se hunde */
-/* Efecto al pasar mouse */
-button:hover { background: #ff3333; transform: scale(1.05); } /* Se ilumina y crece */
+button:active { transform: translateY(4px); box-shadow: none; }
+button:hover { background: #ff3333; transform: scale(1.05); }
 
-/* PANTALLA DE SELECCIÓN */
-#selectScreen {
-    background: url("images/seleccion.png") no-repeat center center;
-    background-size: contain; background-color: black;
-    display: flex; flex-direction: column; /* Elementos en columna */
-    justify-content: center; align-items: center; gap: 20px;
-}
+/* CRÉDITOS Y SELECCIÓN */
+#creditsScreen { background: rgba(10, 10, 10, 0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 60; }
+#creditsScreen h1 { font-family: 'Creepster', cursive; font-size: 60px; color: red; }
+.credits-list { display: flex; gap: 30px; margin-bottom: 40px; justify-content: center; }
+.credit-card { background: #222; padding: 20px; border: 1px solid #444; border-radius: 10px; width: 200px; box-shadow: 0 0 15px rgba(255, 0, 0, 0.2); }
+.credit-card h3 { color: #FFD700; margin-bottom: 5px; }
 
-/* Estilos de la caja de dificultad */
-#difficultySelector {
-    background: rgba(0,0,0,0.8); /* Negro semitransparente */
-    padding: 15px; border-radius: 15px; border: 2px solid #555; width: 300px;
-}
-#difficultySelector h3 { margin: 0 0 10px 0; color: #FFD700; /* Dorado */ }
-
+#selectScreen { background: url("images/seleccion.png") no-repeat center center; background-size: contain; background-color: black; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 20px; }
+#difficultySelector { background: rgba(0,0,0,0.8); padding: 15px; border-radius: 15px; border: 2px solid #555; width: 350px; }
+#difficultySelector h3 { margin: 0 0 10px 0; color: #FFD700; font-family: 'Creepster', cursive; }
 .diff-btns { display: flex; justify-content: center; gap: 10px; }
-.diff-btns button {
-    font-size: 14px; padding: 8px 15px; background: #333; border-color: #555; box-shadow: none;
-}
-.diff-btns button.selected { background: red; border-color: darkred; } /* Botón activo */
+.diff-btns button { font-family: 'Roboto', sans-serif; font-size: 14px; background: #333; border-color: #555; box-shadow: none; }
+.diff-btns button.selected { background: red; border-color: darkred; }
 
-/* Estilos de la caja de personajes */
-#characters {
-    background: rgba(0,0,0,0.7); padding: 20px;
-    border-radius: 15px; border: 2px solid red;
-    display: flex; gap: 15px;
-}
-#characters img {
-    width: 100px; height: 100px; object-fit: contain; cursor: pointer;
-    transition: transform 0.2s; border: 2px solid transparent; border-radius: 10px;
-}
-#characters img:hover {
-    transform: scale(1.1); border-color: yellow; filter: drop-shadow(0 0 10px yellow);
-}
+#characters { background: rgba(0,0,0,0.7); padding: 20px; border-radius: 15px; border: 2px solid red; display: flex; gap: 15px; }
+#characters img { width: 100px; height: 100px; object-fit: contain; cursor: pointer; transition: transform 0.2s; border: 2px solid transparent; border-radius: 10px; }
+#characters img:hover { transform: scale(1.1); border-color: yellow; }
 
-/* ÁREA DE JUEGO (EL MARCO PRINCIPAL) */
+/* JUEGO */
 #gameArea {
-    position: relative; /* Permite posicionar elementos absolutos dentro */
-    width: 800px; height: 500px; /* 💡 TAMAÑO DEL JUEGO: Modifica esto para cambiar la resolución */
-    margin: auto;
-    overflow: hidden; /* Oculta lo que salga de los bordes */
-    box-shadow: 0 0 30px rgba(255,0,0,0.5); /* Resplandor rojo externo */
-    border: 3px solid #444; background: #111;
+    position: relative; width: 800px; height: 500px; margin: auto;
+    overflow: hidden; box-shadow: 0 0 40px rgba(255,0,0,0.6);
+    border: 4px solid #333; background: #111;
 }
 
-/* HUD (INTERFAZ SUPERIOR) */
 #gameUI {
     position: absolute; top: 0; left: 0; width: 100%; height: 80px;
     display: flex; justify-content: space-between; align-items: center;
     padding: 0 20px; box-sizing: border-box; z-index: 40;
-    /* Degradado negro a transparente para que se vea bien el texto */
     background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
-    pointer-events: none; /* 💡 IMPORTANTE: Permite hacer clic a través del HUD */
+    pointer-events: none;
 }
-
-/* Estilos de textos del HUD */
-.ui-group { display: flex; align-items: center; gap: 10px; width: 200px; }
-.ui-center { display: flex; gap: 30px; text-align: center; }
-#ui-weapon { justify-content: flex-end; color: #FFD700; font-weight: bold; }
+.ui-group { display: flex; align-items: center; gap: 10px; width: 250px; }
+.ui-center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 40px; text-align: center; }
+#ui-weapon { justify-content: flex-end; align-items: center; gap: 15px; }
 
 .stat-box .label { font-size: 10px; color: #aaa; display: block; }
-.stat-box .value {
-    font-family: 'Creepster', cursive; /* Fuente de terror */
-    font-size: 35px; color: white; text-shadow: 2px 2px 0 #000;
-}
+.stat-box .value { font-family: 'Creepster', cursive; font-size: 35px; color: white; text-shadow: 2px 2px 0 #000; }
+
+.weapon-info { text-align: right; }
+#weapon-name { display: block; font-size: 12px; color: #FFD700; font-weight: bold; }
+#ammo-display { font-family: 'Creepster', cursive; font-size: 20px; color: white; }
 
 #weapon-icon {
     width: 50px; height: 30px; border: 1px solid #555;
     background-size: contain; background-repeat: no-repeat; background-position: center;
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255,255,255,0.1); border-radius: 4px;
 }
-.heart { color: red; font-size: 25px; text-shadow: 0 0 5px black; }
+.heart { color: red; font-size: 25px; text-shadow: 0 0 5px black; animation: heartbeat 1s infinite; }
 
-/* ELEMENTOS DEL JUEGO */
-#flashOverlay {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; opacity: 0; z-index: 20; transition: opacity 0.1s;
+.dash-container { display: flex; flex-direction: column; align-items: flex-end; }
+.label-dash { font-size: 8px; color: #00ffff; font-weight: bold; margin-bottom: 2px; }
+#dash-bar-bg { width: 60px; height: 6px; background: #333; border: 1px solid #555; border-radius: 4px; overflow: hidden; }
+#dash-bar-fill { width: 100%; height: 100%; background: #00ffff; box-shadow: 0 0 5px #00ffff; transition: width 0.1s linear; }
+
+#flashOverlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0; z-index: 20; transition: opacity 0.1s; }
+#nukeOverlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; opacity: 0; pointer-events: none; z-index: 30; }
+.nuke-active { animation: nukeFlash 1.5s ease-out forwards; }
+
+/* Efecto visual de daño crítico */
+#criticalOverlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    box-shadow: inset 0 0 100px red; pointer-events: none; z-index: 10;
+    opacity: 0; transition: opacity 0.5s; animation: pulseCritical 1s infinite;
 }
-#playerSprite {
-    position: absolute; width: 64px; height: 64px;
-    pointer-events: none; z-index: 10; object-fit: contain;
-}
+.critical-active { opacity: 1 !important; }
+@keyframes pulseCritical { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+#playerSprite { position: absolute; width: 64px; height: 64px; pointer-events: none; z-index: 10; object-fit: contain; }
 canvas { background: black; display: block; width: 100%; height: 100%; }
-
-.mini-btn {
-    position: absolute; bottom: 10px; right: 10px; width: 40px; height: 40px;
-    border-radius: 50%; padding: 0; font-size: 20px; z-index: 50; opacity: 0.7;
-}
+.mini-btn { position: absolute; bottom: 10px; right: 10px; width: 40px; height: 40px; border-radius: 50%; padding: 0; font-size: 20px; z-index: 50; opacity: 0.7; }
 .mini-btn:hover { opacity: 1; }
 
-/* PANTALLAS SUPERPUESTAS (PAUSA Y GAME OVER) */
-#pauseOverlay {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7); display: flex; flex-direction: column;
-    justify-content: center; align-items: center; z-index: 50; color: white;
-}
-#gameOverScreen {
-    background: rgba(0,0,0,0.95); display: flex; flex-direction: column;
-    justify-content: center; align-items: center; z-index: 60;
-}
+#pauseOverlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50; color: white; }
+#gameOverScreen { background: rgba(0,0,0,0.95); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 60; }
 #gameOverScreen h1 { font-family: 'Creepster', cursive; font-size: 80px; color: red; margin: 0; }
-#results { font-size: 24px; margin: 20px 0; line-height: 1.5; }
+#results { font-size: 24px; margin: 20px 0; line-height: 1.5; font-family: 'Roboto', sans-serif; }
 
-/* ANIMACIONES */
-/* Brillo pulsante para items */
-@keyframes itemGlow {
-    0%, 100% { filter: drop-shadow(0 0 2px white); transform: scale(1); }
-    50% { filter: drop-shadow(0 0 10px gold); transform: scale(1.1); }
-}
+@keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.2); } }
+@keyframes nukeFlash { 0% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes itemGlow { 0%, 100% { filter: drop-shadow(0 0 2px white); transform: scale(1); } 50% { filter: drop-shadow(0 0 10px gold); transform: scale(1.1); } }
 .item-glow { animation: itemGlow 1.5s infinite; }
 
-/* Parpadeo de invulnerabilidad */
+/* ✅ NUEVA ANIMACIÓN DE INVULNERABILIDAD (Más limpia) */
 .invulnerable { animation: blink 0.2s infinite; }
 @keyframes blink { 
     0% { opacity: 1; } 
-    50% { opacity: 0.3; filter: brightness(2) sepia(1) hue-rotate(-50deg) saturate(5); } 
+    50% { opacity: 0.4; } /* Semi-transparencia en vez de colores locos */
     100% { opacity: 1; } 
 }
 
-/* Texto flotante subiendo */
-.floating-text {
-    position: absolute; font-weight: bold; font-size: 20px;
-    pointer-events: none; z-index: 30; animation: floatUp 1s forwards;
-    text-shadow: 2px 2px 0 #000; font-family: 'Arial Black', sans-serif;
-}
+.floating-text { position: absolute; font-weight: bold; font-size: 20px; pointer-events: none; z-index: 30; animation: floatUp 1s forwards; text-shadow: 2px 2px 0 #000; font-family: 'Arial Black', sans-serif; }
 @keyframes floatUp { 0% { transform: translateY(0); opacity: 1; } 100% { transform: translateY(-50px); opacity: 0; } }
-
-/* Temblor de pantalla (Shake) */
 .shaking { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
-@keyframes shake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
-}
+@keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }

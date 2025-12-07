@@ -2,25 +2,39 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>VazKills Zombies</title>
-    
+    <title>VazKills Zombies - Final</title>
     <link rel="stylesheet" href="style.css">
-    
     <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Roboto:wght@700&display=swap" rel="stylesheet">
-    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
+<div id="criticalOverlay"></div>
+
 <div id="splashScreen" class="screen">
+    <div id="highScoreDisplay">RÉCORD: 0</div>
     <div class="menuBtns">
-        <button id="startBtn">START</button>
-        <button id="exitBtn">EXIT</button>
+        <button id="startBtn">JUGAR</button>
+        <button id="creditsBtn">CRÉDITOS</button>
+        <button id="exitBtn">SALIR</button>
     </div>
 </div>
 
+<div id="creditsScreen" class="screen hidden">
+    <h1>EQUIPO DE DESARROLLO</h1>
+    <div class="credits-list">
+        <div class="credit-card">Acedo</h3>
+            <p>Lead Developer</p>
+        </div>
+        <div class="credit-card">
+            <h3>Vázquez Studios</h3>
+            <p>Game Design & QA</p>
+        </div>
+    </div>
+    <button id="backFromCredits">VOLVER</button>
+</div>
+
 <div id="selectScreen" class="screen hidden">
-    
     <div id="difficultySelector">
         <h3>SELECCIONA DIFICULTAD</h3>
         <div class="diff-btns">
@@ -29,7 +43,6 @@
             <button onclick="setDifficulty('hard')" id="btnHard">DIFÍCIL</button>
         </div>
     </div>
-
     <div id="characters">
         <img src="images/pl1.gif" onclick="selectCharacter('pl1.gif')">
         <img src="images/pl2.gif" onclick="selectCharacter('pl2.gif')">
@@ -39,7 +52,6 @@
 </div>
 
 <div id="gameScreen" class="screen hidden">
-    
     <div id="gameArea">
         
         <div id="gameUI">
@@ -57,15 +69,22 @@
             </div>
 
             <div class="ui-group" id="ui-weapon">
-                <span id="weapon-name">PISTOLA</span>
+                <div class="dash-container">
+                    <span class="label-dash">DASH (SHIFT)</span>
+                    <div id="dash-bar-bg"><div id="dash-bar-fill"></div></div>
+                </div>
+                <div class="weapon-info">
+                    <span id="weapon-name">PISTOLA</span>
+                    <span id="ammo-display">∞</span>
+                </div>
                 <div id="weapon-icon"></div>
             </div>
         </div>
 
         <div id="flashOverlay"></div>
+        <div id="nukeOverlay"></div>
         
         <img id="playerSprite">
-        
         <canvas id="gameCanvas" width="800" height="500"></canvas>
         
         <div id="pauseOverlay" class="hidden">
